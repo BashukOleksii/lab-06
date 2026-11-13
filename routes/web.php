@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\SessionController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Web\BikeRackController;
 
 Route::middleware('guest:web')->group(function (): void {
     Route::get('/login', [SessionController::class, 'create'])
@@ -12,7 +13,11 @@ Route::middleware('guest:web')->group(function (): void {
 });
 
 Route::middleware('auth:web')->group(function (): void {
-    Route::view('/', 'home')->name('home');
+    Route::get('/', fn() => redirect()->route('bike-racks.index'))
+        ->name('home');
+
+    Route::get('/bike-racks', [BikeRackController::class, 'index'])
+        ->name('bike-racks.index');
 
     Route::post('/logout', [SessionController::class, 'destroy'])
         ->name('logout');

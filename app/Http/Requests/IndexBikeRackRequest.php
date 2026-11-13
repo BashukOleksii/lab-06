@@ -5,7 +5,9 @@ namespace App\Http\Requests;
 use App\Models\BikeRack;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\Attributes\RedirectToRoute;
 
+#[RedirectToRoute('bike-racks.index')]
 class IndexBikeRackRequest extends FormRequest
 {
     public function authorize(): bool
