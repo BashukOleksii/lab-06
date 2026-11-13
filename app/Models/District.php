@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class District extends Model
 {
@@ -10,4 +11,9 @@ class District extends Model
         'name',
         'code',
     ];
+
+    public function bikeRacks(): HasMany
+    {
+        return $this->hasMany(BikeRack::class, 'district_id');
+    }
 }
