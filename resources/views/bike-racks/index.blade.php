@@ -11,6 +11,11 @@
         </form>
     </div>
 
+    <a href="{{ route('bike-racks.create') }}" class="btn btn-primary mb-3">
+        Додати велопарковку
+    </a>
+
+
     @if ($errors->any())
         <div class="alert alert-danger" role="alert">
             <ul class="mb-0">
@@ -81,7 +86,11 @@
             <tbody>
                 @forelse ($bikeRacks as $bikeRack)
                     <tr>
-                        <td>{{ $bikeRack->title }}</td>
+                        <td>
+                            <a href="{{ route('bike-racks.show', ['bike_rack' => $bikeRack]) }}">
+                                {{ $bikeRack->title }}
+                            </a>
+                        </td>
                         <td>{{ $bikeRack->district->name }}</td>
                         <td>{{ $bikeRack->slot_count }}</td>
                         <td>{{ $bikeRack->scheduled_opening_on->format('d.m.Y') }}</td>
