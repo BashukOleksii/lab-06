@@ -31,4 +31,20 @@ Route::middleware('auth:web')->group(function (): void {
 
     Route::post('/logout', [SessionController::class, 'destroy'])
         ->name('logout');
+
+    Route::get('/bike-racks/{bike_rack}/edit', [BikeRackController::class, 'edit'])
+        ->whereNumber('bike_rack')
+        ->name('bike-racks.edit');
+
+    Route::patch('/bike-racks/{bike_rack}', [BikeRackController::class, 'update'])
+        ->whereNumber('bike_rack')
+        ->name('bike-racks.update');
+
+    Route::delete('/bike-racks/{bike_rack}', [BikeRackController::class, 'destroy'])
+        ->whereNumber('bike_rack')
+        ->name('bike-racks.destroy');
+
+    Route::post('/bike-racks/{bike_rack}/open', [BikeRackController::class, 'open'])
+        ->whereNumber('bike_rack')
+        ->name('bike-racks.open');
 });

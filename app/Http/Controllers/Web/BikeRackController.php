@@ -12,6 +12,9 @@ use App\Models\BikeRack;
 use App\Services\BikeRackWriter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
+use App\Exceptions\BikeRackOpeningException;
+use App\Http\Requests\UpdateBikeRackRequest;
+use Illuminate\Http\Request;
 
 class BikeRackController extends Controller
 {
@@ -58,5 +61,61 @@ class BikeRackController extends Controller
         return view('bike-racks.show', [
             'bikeRack' => $bike_rack->load('district'),
         ]);
+    }
+
+    public function edit(BikeRack $bike_rack): View
+    {
+        Gate::authorize('update', $bike_rack);
+
+        return view('bike-racks.edit', [
+            'bikeRack' => $bike_rack,
+            'districts' => District::query()->orderBy('name')->get(),
+        ]);
+    }
+
+    public function update(
+        UpdateBikeRackRequest $request,
+        BikeRack $bike_rack,
+        BikeRackWriter $writer,
+    ): RedirectResponse {
+        $bikeRack = $writer->update(
+            $request->user(),
+            $bike_rack,
+            $request->bikeRackData(),
+        );
+
+        return redirect()
+            ->route('bike-racks.show', ['bike_rack' => $bikeRack])
+            ->with('success', 'Зміни збережено.');
+    }
+
+    public function destroy(
+        Request $request,
+        BikeRack $bike_rack,
+        BikeRackWriter $writer,
+    ): RedirectResponse {
+        $writer->delete($request->user(), $bike_rack);
+
+        return redirect()
+            ->route('bike-racks.index')
+            ->with('success', 'Велопарковку видалено.');
+    }
+
+    public function open(
+        Request $request,
+        BikeRack $bike_rack,
+        BikeRackWriter $writer,
+    ): RedirectResponse {
+        try {
+            $bikeRack = $writer->open($request->user(), $bike_rack);
+        } catch (BikeRackOpeningException $exception) {
+            return redirect()
+                ->route('bike-racks.show', ['bike_rack' => $bike_rack])
+                ->with('opening_error', $exception->getMessage());
+        }
+
+        return redirect()
+            ->route('bike-racks.show', ['bike_rack' => $bikeRack])
+            ->with('success', 'Відкриття велопарковки підтверджено.');
     }
 }
