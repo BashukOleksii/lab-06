@@ -43,6 +43,10 @@ Route::middleware('auth:sanctum')->name('api.')->group(function (): void {
         ->whereNumber('bike_rack')
         ->name('bike-racks.open');
 
+    Route::get('/bike-racks/{bike_rack}/receipts', [BikeRackController::class, 'receipts'])
+        ->whereNumber('bike_rack')
+        ->name('bike-racks.receipts.index');
+
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
 });

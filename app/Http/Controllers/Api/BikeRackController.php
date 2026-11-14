@@ -8,8 +8,10 @@ use App\Http\Requests\IndexBikeRackRequest;
 use App\Http\Requests\StoreBikeRackRequest;
 use App\Http\Requests\UpdateBikeRackRequest;
 use App\Http\Resources\BikeRackResource;
+use App\Http\Resources\ConfirmationReceiptResource;
 use App\Http\Resources\DistrictResource;
 use App\Models\BikeRack;
+use App\Models\ConfirmationReceipt;
 use App\Models\District;
 use App\Queries\BikeRackListQuery;
 use App\Services\BikeRackWriter;
@@ -31,6 +33,17 @@ class BikeRackController extends Controller
         );
 
         return BikeRackResource::collection($bikeRacks);
+    }
+
+    public function receipts(BikeRack $bike_rack): AnonymousResourceCollection
+    {
+        Gate::authorize('view', $bike_rack);
+
+        $receipts = ConfirmationReceipt::query()
+            ->where('bike_rack_id', $bike_rack->getKey())
+            ->get();
+
+        return ConfirmationReceiptResource::collection($receipts);
     }
 
     public function districts(): AnonymousResourceCollection

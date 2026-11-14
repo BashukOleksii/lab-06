@@ -7,6 +7,7 @@ use App\Models\BikeRack;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use App\Events\BikeRackOpened;
 
 class BikeRackWriter
 {
@@ -79,6 +80,9 @@ class BikeRackWriter
 
             $current->status = 'confirmed';
             $current->save();
+
+
+            BikeRackOpened::dispatch($current->id);
 
             return $current;
         });
