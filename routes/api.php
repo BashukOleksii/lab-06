@@ -2,7 +2,16 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BikeRackController;
+
+Route::post('/register', [AuthController::class, 'register'])
+    ->middleware('throttle:5,1,api-register')
+    ->name('api.register');
+
+Route::post('/login', [AuthController::class, 'login'])
+    ->middleware('throttle:5,1,api-login')
+    ->name('api.login');
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -33,4 +42,7 @@ Route::middleware('auth:sanctum')->name('api.')->group(function (): void {
     Route::post('/bike-racks/{bike_rack}/open', [BikeRackController::class, 'open'])
         ->whereNumber('bike_rack')
         ->name('bike-racks.open');
+
+    Route::post('/logout', [AuthController::class, 'logout'])
+        ->name('logout');
 });
