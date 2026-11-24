@@ -41,6 +41,6 @@ class BikeRackListQuery
                 perPage: (int) ($filters['per_page'] ?? 10),
                 page: (int) ($filters['page'] ?? 1),
             )
-            ->appends(Arr::except($filters, ['page']));
+            ->appends($filters);
     }
 }

@@ -69,7 +69,7 @@ class BikeRackWriter
             $minimum = self::MIN_SLOTS;
 
             if ($current->district->code === 'central') {
-                $minimum = max($minimum, self::CENTRAL_MIN_SLOTS);
+                $minimum = self::CENTRAL_MIN_SLOTS;
             }
 
             if ($current->slot_count < $minimum) {
