@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\SessionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\BikeRackController;
+use App\Http\Controllers\Web\ConfirmationReceiptController;
 
 Route::middleware('guest:web')->group(function (): void {
     Route::get('/login', [SessionController::class, 'create'])
@@ -18,6 +19,9 @@ Route::middleware('auth:web')->group(function (): void {
 
     Route::get('/bike-racks', [BikeRackController::class, 'index'])
         ->name('bike-racks.index');
+
+    Route::get('/confirmation-receipts', [ConfirmationReceiptController::class, 'index'])
+        ->name('confirmation-receipts.index');
 
     Route::get('/bike-racks/create', [BikeRackController::class, 'create'])
         ->name('bike-racks.create');

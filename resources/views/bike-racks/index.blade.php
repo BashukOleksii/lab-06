@@ -11,9 +11,15 @@
         </form>
     </div>
 
-    <a href="{{ route('bike-racks.create') }}" class="btn btn-primary mb-3">
-        Додати велопарковку
-    </a>
+    <div class="d-flex flex-wrap gap-2 mb-3">
+        <a href="{{ route('bike-racks.create') }}" class="btn btn-primary">
+            Додати велопарковку
+        </a>
+
+        <a href="{{ route('confirmation-receipts.index') }}" class="btn btn-outline-primary">
+            Чеки підтвердження
+        </a>
+    </div>
 
 
     @if ($errors->any())
