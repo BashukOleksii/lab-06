@@ -40,6 +40,26 @@ class BikeRackSeeder extends Seeder
             ['second', 'south', 'Біля спортзалу', 9, 0, 'confirmed'],
         ];
 
+        $additionalDistricts = [
+            'north',
+            'central',
+            'east',
+            'south',
+        ];
+
+        foreach (['first', 'second'] as $ownerKey) {
+            for ($i = 1; $i <= 9; $i++) {
+                $examples[] = [
+                    $ownerKey,
+                    $additionalDistricts[($i - 1) % count($additionalDistricts)],
+                    "Демонстраційна велопарковка №{$i}",
+                    5 + $i,
+                    $i + 7,
+                    'draft',
+                ];
+            }
+        }
+
         $today = today('Europe/Kyiv')->toImmutable();
 
         foreach ($examples as [$ownerKey, $districtCode, $title, $slots, $days, $status]) {

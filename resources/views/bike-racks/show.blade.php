@@ -98,9 +98,8 @@
             </form>
         @endif
 
-        <form method="POST" action="{{ route('bike-racks.destroy', ['bike_rack' => $bikeRack]) }}">
-            @csrf
-            @method('DELETE')
+        <form method="POST" action="{{ route('bike-racks.destroy', ['bike_rack' => $bikeRack]) }}"
+            onsubmit="return confirm('Ви дійсно бажаєте видалити велопарковку?')">
 
             <button type="submit" class="btn btn-outline-danger">
                 Видалити

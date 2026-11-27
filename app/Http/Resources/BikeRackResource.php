@@ -36,6 +36,10 @@ class BikeRackResource extends JsonResource
                 ),
             ),
 
+            'notes' => NoteResource::collection(
+                $this->whenLoaded('notes')
+            ),
+
             'created_at' =>
             $this->created_at->toIso8601String(),
 

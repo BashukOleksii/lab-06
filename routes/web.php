@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\SessionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\BikeRackController;
 use App\Http\Controllers\Web\ConfirmationReceiptController;
+use App\Http\Controllers\Web\NoteController;
 
 Route::middleware('guest:web')->group(function (): void {
     Route::get('/login', [SessionController::class, 'create'])
@@ -51,4 +52,31 @@ Route::middleware('auth:web')->group(function (): void {
     Route::post('/bike-racks/{bike_rack}/open', [BikeRackController::class, 'open'])
         ->whereNumber('bike_rack')
         ->name('bike-racks.open');
+
+    Route::prefix('bike-racks/{bike_rack}/notes')
+        ->name('bike-racks.notes.')
+        ->scopeBindings()
+        ->where([
+            'bike_rack' => '[0-9]+',
+            'note' => '[0-9]+',
+        ])
+        ->group(function (): void {
+            Route::get('/create', [NoteController::class, 'create'])
+                ->name('create');
+
+            Route::post('/', [NoteController::class, 'store'])
+                ->name('store');
+
+            Route::get('/{note}', [NoteController::class, 'show'])
+                ->name('show');
+
+            Route::get('/{note}/edit', [NoteController::class, 'edit'])
+                ->name('edit');
+
+            Route::patch('/{note}', [NoteController::class, 'update'])
+                ->name('update');
+
+            Route::delete('/{note}', [NoteController::class, 'destroy'])
+                ->name('destroy');
+        });
 });

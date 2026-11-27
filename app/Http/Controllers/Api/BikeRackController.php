@@ -53,14 +53,16 @@ class BikeRackController extends Controller
         return DistrictResource::collection($districts);
     }
 
-    public function show(BikeRack $bike_rack): BikeRackResource
-    {
+    public function show(
+        BikeRack $bike_rack,
+    ): BikeRackResource {
         Gate::authorize('view', $bike_rack);
 
         return new BikeRackResource(
             $bike_rack->load([
                 'district',
                 'confirmationReceipt',
+                'notes',
             ])
         );
     }

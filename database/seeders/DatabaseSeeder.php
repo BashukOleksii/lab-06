@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DistrictSeeder::class,
             BikeRackSeeder::class,
+            NoteSeeder::class,
         ]);
     }
 }

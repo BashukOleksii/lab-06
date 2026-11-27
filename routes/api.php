@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BikeRackController;
 use App\Http\Controllers\Api\ConfirmationReceiptController;
+use App\Http\Controllers\Api\NoteController;
 
 Route::post('/register', [AuthController::class, 'register'])
     ->middleware('throttle:5,1,api-register')
@@ -52,6 +53,30 @@ Route::middleware('auth:sanctum')->name('api.')->group(function (): void {
     Route::get('/bike-racks/{bike_rack}/receipts', [BikeRackController::class, 'receipts'])
         ->whereNumber('bike_rack')
         ->name('bike-racks.receipts.index');
+
+    Route::prefix('bike-racks/{bike_rack}/notes')
+        ->name('bike-racks.notes.')
+        ->scopeBindings()
+        ->where([
+            'bike_rack' => '[0-9]+',
+            'note' => '[0-9]+',
+        ])
+        ->group(function (): void {
+            Route::get('/', [NoteController::class, 'index'])
+                ->name('index');
+
+            Route::post('/', [NoteController::class, 'store'])
+                ->name('store');
+
+            Route::get('/{note}', [NoteController::class, 'show'])
+                ->name('show');
+
+            Route::patch('/{note}', [NoteController::class, 'update'])
+                ->name('update');
+
+            Route::delete('/{note}', [NoteController::class, 'destroy'])
+                ->name('destroy');
+        });
 
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');

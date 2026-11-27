@@ -62,6 +62,7 @@ class BikeRackController extends Controller
             'bikeRack' => $bike_rack->load([
                 'district',
                 'confirmationReceipt',
+                'notes',
             ]),
         ]);
     }
