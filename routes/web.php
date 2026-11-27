@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\Auth\SessionController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\BikeRackController;
 use App\Http\Controllers\Web\ConfirmationReceiptController;
 use App\Http\Controllers\Web\NoteController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:web')->group(function (): void {
     Route::get('/login', [SessionController::class, 'create'])
@@ -18,11 +18,16 @@ Route::middleware('auth:web')->group(function (): void {
     Route::get('/', fn() => redirect()->route('bike-racks.index'))
         ->name('home');
 
+    Route::post('/logout', [SessionController::class, 'destroy'])
+        ->name('logout');
+
     Route::get('/bike-racks', [BikeRackController::class, 'index'])
         ->name('bike-racks.index');
 
-    Route::get('/confirmation-receipts', [ConfirmationReceiptController::class, 'index'])
-        ->name('confirmation-receipts.index');
+    Route::get(
+        '/confirmation-receipts',
+        [ConfirmationReceiptController::class, 'index']
+    )->name('confirmation-receipts.index');
 
     Route::get('/bike-racks/create', [BikeRackController::class, 'create'])
         ->name('bike-racks.create');
@@ -33,9 +38,6 @@ Route::middleware('auth:web')->group(function (): void {
     Route::get('/bike-racks/{bike_rack}', [BikeRackController::class, 'show'])
         ->whereNumber('bike_rack')
         ->name('bike-racks.show');
-
-    Route::post('/logout', [SessionController::class, 'destroy'])
-        ->name('logout');
 
     Route::get('/bike-racks/{bike_rack}/edit', [BikeRackController::class, 'edit'])
         ->whereNumber('bike_rack')
@@ -80,3 +82,7 @@ Route::middleware('auth:web')->group(function (): void {
                 ->name('destroy');
         });
 });
+
+Route::view('/app/{path?}', 'app')
+    ->where('path', '.*')
+    ->name('spa');
