@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class BikeRack extends Model
 {
@@ -33,6 +34,17 @@ class BikeRack extends Model
 
     public function district(): BelongsTo
     {
-        return $this->belongsTo(District::class, 'district_id');
+        return $this->belongsTo(
+            District::class,
+            'district_id'
+        );
+    }
+
+    public function confirmationReceipt(): HasOne
+    {
+        return $this->hasOne(
+            ConfirmationReceipt::class,
+            'bike_rack_id'
+        );
     }
 }

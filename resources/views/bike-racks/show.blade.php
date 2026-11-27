@@ -22,6 +22,63 @@
         <dd class="col-sm-8">{{ $bikeRack->description ?? 'Не вказано' }}</dd>
     </dl>
 
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="h5 mb-3">
+                Чек підтвердження відкриття
+            </h2>
+
+            @if ($bikeRack->status === 'draft')
+                <p class="text-body-secondary mb-0">
+                    Чек буде сформовано після відкриття
+                    велопарковки.
+                </p>
+            @elseif ($bikeRack->confirmationReceipt === null)
+                <div class="alert alert-warning mb-3">
+                    Відкриття велопарковки підтверджено.
+                    Очікується формування чека.
+                </div>
+
+                <a href="{{ route('bike-racks.show', [
+                    'bike_rack' => $bikeRack,
+                ]) }}"
+                    class="btn btn-outline-secondary btn-sm">
+                    Оновити інформацію
+                </a>
+            @else
+                <span class="badge text-bg-success mb-3">
+                    Чек сформовано
+                </span>
+
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">
+                        Номер чека
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        {{ $bikeRack->confirmationReceipt->id }}
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        Підтвердження
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        {{ $bikeRack->confirmationReceipt->summary }}
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        Дата формування
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        {{ $bikeRack->confirmationReceipt->created_at->timezone('Europe/Kyiv')->format('d.m.Y H:i') }}
+                    </dd>
+                </dl>
+            @endif
+        </div>
+    </div>
+
     <div class="d-flex flex-wrap gap-2">
         <a href="{{ route('bike-racks.index') }}" class="btn btn-outline-secondary">
             До списку

@@ -57,7 +57,12 @@ class BikeRackController extends Controller
     {
         Gate::authorize('view', $bike_rack);
 
-        return new BikeRackResource($bike_rack->load('district'));
+        return new BikeRackResource(
+            $bike_rack->load([
+                'district',
+                'confirmationReceipt',
+            ])
+        );
     }
 
     public function store(
@@ -107,13 +112,21 @@ class BikeRackController extends Controller
         BikeRackWriter $writer,
     ): BikeRackResource|JsonResponse {
         try {
-            $bikeRack = $writer->open($request->user(), $bike_rack);
+            $bikeRack = $writer->open(
+                $request->user(),
+                $bike_rack
+            );
         } catch (BikeRackOpeningException $exception) {
             return response()->json([
                 'message' => $exception->getMessage(),
             ], 409);
         }
 
-        return new BikeRackResource($bikeRack->loadMissing('district'));
+        return new BikeRackResource(
+            $bikeRack->load([
+                'district',
+                'confirmationReceipt',
+            ])
+        );
     }
 }

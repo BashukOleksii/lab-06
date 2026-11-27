@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BikeRackController;
+use App\Http\Controllers\Api\ConfirmationReceiptController;
 
 Route::post('/register', [AuthController::class, 'register'])
     ->middleware('throttle:5,1,api-register')
@@ -23,6 +24,11 @@ Route::middleware('auth:sanctum')->name('api.')->group(function (): void {
 
     Route::get('/bike-racks', [BikeRackController::class, 'index'])
         ->name('bike-racks.index');
+
+    Route::get(
+        '/confirmation-receipts',
+        [ConfirmationReceiptController::class, 'index']
+    )->name('confirmation-receipts.index');
 
     Route::post('/bike-racks', [BikeRackController::class, 'store'])
         ->name('bike-racks.store');

@@ -59,7 +59,10 @@ class BikeRackController extends Controller
         Gate::authorize('view', $bike_rack);
 
         return view('bike-racks.show', [
-            'bikeRack' => $bike_rack->load('district'),
+            'bikeRack' => $bike_rack->load([
+                'district',
+                'confirmationReceipt',
+            ]),
         ]);
     }
 

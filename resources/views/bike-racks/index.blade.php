@@ -64,6 +64,28 @@
             </select>
         </div>
 
+        <div class="col-sm-6 col-lg">
+            <label for="sort" class="form-label">
+                Сортування
+            </label>
+
+            <select id="sort" name="sort" class="form-select">
+                @foreach ([
+        'opening_desc' => 'Дата відкриття ↓',
+        'opening_asc' => 'Дата відкриття ↑',
+        'title_asc' => 'Назва А–Я',
+        'title_desc' => 'Назва Я–А',
+        'slots_asc' => 'Кількість місць ↑',
+        'slots_desc' => 'Кількість місць ↓',
+        'created_desc' => 'Найновіші',
+    ] as $value => $label)
+                    <option value="{{ $value }}" @selected(($filters['sort'] ?? 'opening_desc') === $value)>
+                        {{ $label }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
         <div class="col-sm-6 col-lg-auto">
             <label for="per_page" class="form-label">На сторінці</label>
             <input type="number" id="per_page" name="per_page" class="form-control" min="1" max="50"

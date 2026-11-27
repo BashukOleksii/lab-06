@@ -11,9 +11,20 @@ class ConfirmationReceiptResource extends JsonResource
     {
         return [
             'id' => $this->id,
+
             'bike_rack_id' => $this->bike_rack_id,
+
             'summary' => $this->summary,
-            'created_at' => $this->created_at->toIso8601String(),
+
+            'created_at' =>
+            $this->created_at->toIso8601String(),
+
+            'bike_rack' => $this->whenLoaded(
+                'bikeRack',
+                fn() => new BikeRackResource(
+                    $this->bikeRack
+                ),
+            ),
         ];
     }
 }
